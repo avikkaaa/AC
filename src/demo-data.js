@@ -1,4 +1,4 @@
-// Hackathon-ready demo data. This is intentionally synthetic and clearly presented as demo content.
+// Marketplace products sourced from the supplied 50-item product catalog.
 export const demoArtisans=[
   {name:'Meera Devi',craft:'Madhubani',location:'Madhubani, Bihar',rating:'4.9',works:'18',story:'A third-generation painter translating family stories into bold natural-colour compositions.'},
   {name:'Raghav Sahu',craft:'Dhokra',location:'Bastar, Chhattisgarh',rating:'4.8',works:'12',story:'A metal artisan preserving lost-wax traditions while creating contemporary home objects.'},
@@ -7,16 +7,21 @@ export const demoArtisans=[
   {name:'Farida Begum',craft:'Kalamkari',location:'Machilipatnam, Andhra Pradesh',rating:'4.8',works:'21',story:'A textile artist combining hand-drawn motifs with traditional resist and natural-dye practices.'},
   {name:'Harpreet Kaur',craft:'Phulkari',location:'Patiala, Punjab',rating:'4.9',works:'16',story:'An embroidery artist reinterpreting family patterns for contemporary collectors and gifting.'}
 ];
-export const demoProducts=[
-  {title:'Monsoon Garden Panel',craft:'Madhubani',price:'₹4,800',artisan:'Meera Devi',location:'Bihar',match:'94%'},
-  {title:'Lotus Memory Vessel',craft:'Dhokra',price:'₹3,200',artisan:'Raghav Sahu',location:'Chhattisgarh',match:'91%'},
-  {title:'Indigo Geometry Saree',craft:'Handloom',price:'₹6,900',artisan:'Ananya Rao',location:'Telangana',match:'96%'},
-  {title:'Birds of the Coast',craft:'Pattachitra',price:'₹5,600',artisan:'Savitri Patnaik',location:'Odisha',match:'89%'},
-  {title:'Forest Lines Textile',craft:'Kalamkari',price:'₹7,200',artisan:'Farida Begum',location:'Andhra Pradesh',match:'93%'},
-  {title:'Phulkari Sunburst',craft:'Phulkari',price:'₹5,400',artisan:'Harpreet Kaur',location:'Punjab',match:'95%'},
-  {title:'Earth & Grain Wall Weave',craft:'Weaving',price:'₹8,900',artisan:'Ananya Rao',location:'Telangana',match:'88%'},
-  {title:'Village Stories Triptych',craft:'Warli',price:'₹6,100',artisan:'Demo artisan',location:'Maharashtra',match:'90%'}
+
+const catalog=[
+['Abstract Reading Man Metal Sculpture','Metal Wall Sculpture','₹1,800 - ₹4,200'],['Golden Tree Metal Wall Art 24 inch','Metal Wall Art','₹1,200 - ₹3,500'],['Abstract Ribbon Gold Metal Wall Art','Metal Abstract Art','₹1,400 - ₹3,800'],['Ginkgo Leaf Clock Metal Wall Decor','Metal Wall Clock','₹1,500 - ₹4,000'],['Wire Fish Metal Sculpture on Wood','Metal Fish Sculpture','₹1,200 - ₹3,200'],['Vintage Motorcycle Metal Wall Art','3D Metal Motorcycle Decor','₹1,800 - ₹4,500'],['Golden Sunburst Mirror Wall Decor','Sunburst Mirror','₹2,000 - ₹6,000'],['Aqua Gold Leaf Disc Metal Wall Art','Metal Leaf Art','₹1,100 - ₹3,200'],['Scrap Metal Turtle Floor Sculpture','Metal Turtle Sculpture','₹2,500 - ₹7,000'],['Ginkgo Leaves Metal Frame Art','Metal Frame Art','₹1,000 - ₹3,000'],
+['White Chikankari Embroidered Kurta Set','Chikankari Apparel','₹800 - ₹2,500'],['Sunflower Embroidered Hair Clips','Embroidered Accessory','₹99 - ₹299'],['Banjara Mirror Work Sling Bag','Banjara Bag','₹600 - ₹1,800'],['Butterfly Textile Embroidered Wall Art','Textile Art','₹400 - ₹1,200'],['Designer Embroidered Clutch Pouch','Embroidered Clutch','₹350 - ₹900'],['Bird Framed Embroidery Art','Framed Embroidery','₹500 - ₹1,500'],['Moon Cloud Embroidered Hoop Art 8 inch','Hoop Art','₹300 - ₹800'],['White Mul Embroidered Dress','Embroidered Dress','₹1,200 - ₹3,500'],['Sequin Embroidered Net Fabric','Embroidered Fabric','₹400 - ₹1,200/mtr'],['Thread Work Embroidered Earrings','Embroidered Jewelry','₹150 - ₹500'],
+['Bamboo Woven Round Basket Soop','Bamboo Basket','₹299 - ₹499'],['Bamboo Hut Wall Lamp Sconce','Bamboo Lamp','₹519 - ₹2,300'],['Rattan Cane Magazine Holder','Rattan Decor','₹900 - ₹4,150'],['Handmade Wooden Toy Crane Truck','Wooden Toy','₹150 - ₹790'],['Round Cane Basket With Lid','Cane Basket','₹339 - ₹655'],['Bamboo Hanging Planter Tubes Set','Bamboo Planter','₹200 - ₹760'],['Bamboo Mobile Amplifier Dock','Bamboo Speaker','₹299 - ₹699'],['Wooden Barrel Utensil Holder Set','Wooden Cutlery','₹350 - ₹799'],['Bamboo Tissue Box Holder','Bamboo Tissue Box','₹240 - ₹599'],['Bamboo Folding Low Table Combo','Bamboo Furniture','₹2,500 - ₹5,500'],
+['Floral Chrysanthemum Ceramic Vases Set','Ceramic Vases','₹1,200 - ₹3,500'],['Arts & Crafts Green Ceramic Vase','Ceramic Vase','₹800 - ₹2,200'],['Cherry Blossom Ceramic Plates Set','Ceramic Plates','₹600 - ₹1,800'],['Ceramic Birdhouse Hanging Planter','Ceramic Decor','₹400 - ₹1,100'],['Colorful Star Ceramic Mugs Set','Ceramic Mugs','₹350 - ₹900'],['Drip Glaze Colorful Ceramic Bowl','Ceramic Bowl','₹450 - ₹1,200'],['Cloisonne Enamel Mini Jar Set','Ceramic Set','₹900 - ₹2,500'],['Moon Face Ceramic Pitcher Jug','Ceramic Pitcher','₹700 - ₹2,000'],['Monster Face Ceramic Bowls 3pc','Ceramic Bowls','₹600 - ₹1,600'],['Blue Leaf Ceramic Dinner Plates Set','Ceramic Plates','₹550 - ₹1,500'],
+['Floral Carved MDF Wall Panel Long','Wooden Wall Panel','₹535 - ₹1,800'],['Lord Krishna Carved Wood Panel','Spiritual Wood Panel','₹850 - ₹2,800'],['3D Geometric Wood Block Wall Art','Modern Wood Art','₹1,200 - ₹3,500'],['Wolf Intarsia Wood Mosaic Art','Intarsia Wood Art','₹2,000 - ₹5,000'],['Owl Family Jali Carved Sculpture','Jali Sculpture','₹900 - ₹2,200'],['Woodpecker Door Knocker Wall Decor','Door Knocker','₹400 - ₹1,200'],['Tree of Life Wood Slice Wreath','Wood Wreath','₹600 - ₹1,800'],['Om Mandala Carved Wood Plate 12 inch','Mandala Plate','₹150 - ₹450'],['Dual Face Abstract Wall Sculpture','Abstract Sculpture','₹1,500 - ₹4,000'],['Rustic Wooden Bowl & Goblet Serveware Set','Wooden Serveware','₹800 - ₹2,500']
 ];
+
+export const demoProducts=catalog.map(([title,craft,price],i)=>({
+  id:`AC-${String(i+1).padStart(3,'0')}`,
+  title,craft,price,artisan:'Artisan Connect marketplace',location:'India',match:'—',
+  tags:[craft.split(' ')[0],'Handmade','Indian craft']
+}));
+
 export const demoOpportunities=[
   {buyer:'Casa Terra Interiors',category:'Home Decor & Interiors',product:'Handmade wall objects',fit:'96%',value:'₹25k–₹60k / order',status:'New'},
   {buyer:'Museum Craft Store',category:'Museum & Cultural Spaces',product:'Story-led Indian craft',fit:'92%',value:'₹15k–₹40k / order',status:'Review'},
@@ -24,14 +29,14 @@ export const demoOpportunities=[
   {buyer:'Heritage Hotels Collective',category:'Hospitality & Boutique Hotels',product:'Decorative craft objects',fit:'87%',value:'₹30k–₹80k / order',status:'Shortlisted'}
 ];
 export const demoOrders=[
-  {id:'AC-DEMO-1042',product:'Monsoon Garden Panel',artisan:'Meera Devi',amount:'₹4,800',status:'Delivered',date:'12 Aug 2026'},
-  {id:'AC-DEMO-1031',product:'Lotus Memory Vessel',artisan:'Raghav Sahu',amount:'₹3,200',status:'In transit',date:'28 Aug 2026'},
-  {id:'AC-DEMO-1018',product:'Indigo Geometry Saree',artisan:'Ananya Rao',amount:'₹6,900',status:'Confirmed',date:'03 Sep 2026'}
+  {id:'AC-DEMO-1042',product:'Abstract Reading Man Metal Sculpture',artisan:'Artisan Connect marketplace',amount:'₹1,800 - ₹4,200',status:'Delivered',date:'12 Aug 2026'},
+  {id:'AC-DEMO-1031',product:'Banjara Mirror Work Sling Bag',artisan:'Artisan Connect marketplace',amount:'₹600 - ₹1,800',status:'In transit',date:'28 Aug 2026'},
+  {id:'AC-DEMO-1018',product:'Bamboo Folding Low Table Combo',artisan:'Artisan Connect marketplace',amount:'₹2,500 - ₹5,500',status:'Confirmed',date:'03 Sep 2026'}
 ];
 export const demoSaved=[
-  {title:'Birds of the Coast',artisan:'Savitri Patnaik',price:'₹5,600'},
-  {title:'Phulkari Sunburst',artisan:'Harpreet Kaur',price:'₹5,400'},
-  {title:'Forest Lines Textile',artisan:'Farida Begum',price:'₹7,200'}
+  {title:'Floral Chrysanthemum Ceramic Vases Set',artisan:'Artisan Connect marketplace',price:'₹1,200 - ₹3,500'},
+  {title:'Tree of Life Wood Slice Wreath',artisan:'Artisan Connect marketplace',price:'₹600 - ₹1,800'},
+  {title:'Golden Sunburst Mirror Wall Decor',artisan:'Artisan Connect marketplace',price:'₹2,000 - ₹6,000'}
 ];
 
 function addBuyerMatchStyles(){
@@ -42,47 +47,15 @@ function addBuyerMatchStyles(){
     @media(max-width:850px){.ai-buyer-form{grid-template-columns:1fr 1fr}.ai-buyer-form input{grid-column:1/-1}.ai-buyer-form button{grid-column:1/-1}.ai-match-card{grid-template-columns:1fr}.ai-match-score{text-align:left}}
   `;document.head.appendChild(style);
 }
-
 function installBuyerAI(){
   const panelHost=document.querySelector('.dashboard-content');
   if(!panelHost||document.querySelector('.ai-buyer-panel')||!document.querySelector('.buyer-products'))return;
   addBuyerMatchStyles();
-  const panel=document.createElement('section');panel.className='ai-buyer-panel';panel.innerHTML=`
-    <span class="eyebrow">✦ AI BUYER MATCH</span>
-    <h2>Tell us what you are looking for.</h2>
-    <p>Describe the artwork, craft, style or purpose you want. AI categorises your intent and ranks the catalog from strongest match to similar alternatives.</p>
-    <form class="ai-buyer-form">
-      <label>What do you want?<input name="preferences" placeholder="e.g. colorful wall art for a modern living room" required></label>
-      <label>Budget<select name="budget"><option value="">Any budget</option><option>Under ₹5,000</option><option>₹5,000–₹10,000</option><option>₹10,000+</option></select></label>
-      <label>Purpose<select name="purpose"><option value="">Any purpose</option><option>Home decor</option><option>Gift</option><option>Collecting</option><option>Fashion</option></select></label>
-      <button type="submit">✦ Find my matches</button>
-    </form><div class="ai-buyer-status"></div><div class="ai-match-results"></div>
-    <div class="ai-match-note">AI scores are recommendations based on the buyer request and catalog data — not a guarantee.</div>`;
+  const panel=document.createElement('section');panel.className='ai-buyer-panel';panel.innerHTML=`<span class="eyebrow">✦ AI BUYER MATCH</span><h2>Tell us what you are looking for.</h2><p>Describe the artwork, craft, style or purpose you want. AI categorises your intent and ranks the catalog from strongest match to similar alternatives.</p><form class="ai-buyer-form"><label>What do you want?<input name="preferences" placeholder="e.g. colorful wall art for a modern living room" required></label><label>Budget<select name="budget"><option value="">Any budget</option><option>Under ₹5,000</option><option>₹5,000–₹10,000</option><option>₹10,000+</option></select></label><label>Purpose<select name="purpose"><option value="">Any purpose</option><option>Home decor</option><option>Gift</option><option>Collecting</option><option>Fashion</option></select></label><button type="submit">✦ Find my matches</button></form><div class="ai-buyer-status"></div><div class="ai-match-results"></div><div class="ai-match-note">AI scores are recommendations based on the buyer request and catalog data — not a guarantee.</div>`;
   panelHost.insertBefore(panel,panelHost.firstElementChild);
   const form=panel.querySelector('form'),status=panel.querySelector('.ai-buyer-status'),results=panel.querySelector('.ai-match-results');
-  form.addEventListener('submit',async e=>{
-    e.preventDefault();const fd=new FormData(form);const body=Object.fromEntries(fd.entries());
-    status.textContent='AI is understanding your preferences and ranking artwork…';results.innerHTML='';form.querySelector('button').disabled=true;
-    try{
-      const response=await fetch('/api/buyer-match',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});const data=await response.json();if(!response.ok)throw Error(data.error||'Matching failed');
-      status.innerHTML=`<b>${data.category}</b> · ${data.intent}`;
-      results.innerHTML=data.matches.map((m,i)=>{const p=m.product;return `<article class="ai-match-card ${i===0?'best':''}"><div><small>${m.match_level} · ${p.craft} · ${p.location}</small><b>${p.title}</b><small>${p.artisan} · ${p.price}</small><div class="ai-match-tags">${p.tags?.map(t=>`<span class="ai-match-tag">${t}</span>`).join('')||''}</div></div><div class="ai-match-score">${m.match_percentage}%<small>AI match</small></div><p class="ai-match-reason">${m.reason}</p></article>`}).join('');
-    }catch(error){status.textContent=error.message||'Could not generate matches. Please try again.'}finally{form.querySelector('button').disabled=false}
-  });
+  form.addEventListener('submit',async e=>{e.preventDefault();const fd=new FormData(form);const body=Object.fromEntries(fd.entries());status.textContent='AI is understanding your preferences and ranking artwork…';results.innerHTML='';form.querySelector('button').disabled=true;try{const response=await fetch('/api/buyer-match',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});const data=await response.json();if(!response.ok)throw Error(data.error||'Matching failed');status.innerHTML=`<b>${data.category}</b> · ${data.intent}`;results.innerHTML=data.matches.map((m,i)=>{const p=m.product;return `<article class="ai-match-card ${i===0?'best':''}"><div><small>${m.match_level} · ${p.craft} · ${p.location}</small><b>${p.title}</b><small>${p.artisan} · ${p.price}</small><div class="ai-match-tags">${p.tags?.map(t=>`<span class="ai-match-tag">${t}</span>`).join('')||''}</div></div><div class="ai-match-score">${m.match_percentage}%<small>AI match</small></div><p class="ai-match-reason">${m.reason}</p></article>`}).join('')}catch(error){status.textContent=error.message||'Could not generate matches. Please try again.'}finally{form.querySelector('button').disabled=false}});
 }
-
 export function installHackathonDemo(){
   if(window.__artisanConnectDemoInstalled)return;window.__artisanConnectDemoInstalled=true;
-  const inject=()=>{
-    const root=document.getElementById('root');if(!root)return;
-    const existing=document.getElementById('hackathon-demo-badge');
-    if(!existing&&!document.querySelector('.dashboard')){const badge=document.createElement('div');badge.id='hackathon-demo-badge';badge.textContent='HACKATHON DEMO · Sample data';Object.assign(badge.style,{position:'fixed',bottom:'14px',right:'14px',zIndex:'9999',padding:'8px 12px',borderRadius:'999px',background:'#4A2C22',color:'#FFF9F0',font:'600 11px/1.2 system-ui',letterSpacing:'.08em',boxShadow:'0 8px 24px rgba(36,22,18,.18)'});document.body.appendChild(badge)}
-    const marketplace=document.querySelector('.products');if(marketplace&&!marketplace.dataset.demoExpanded){marketplace.dataset.demoExpanded='true';demoProducts.slice(4,8).forEach((p,i)=>{const card=document.createElement('article');card.innerHTML=`<div class="product i${i%4}"></div><b>${p.title}</b><small>${p.craft} · ${p.location}</small><strong>${p.price}</strong>`;marketplace.appendChild(card)})}
-    const buyers=document.querySelector('.buyer-products');if(buyers&&!buyers.dataset.demoExpanded){buyers.dataset.demoExpanded='true';demoProducts.slice(4).forEach((p,i)=>{const card=document.createElement('article');card.innerHTML=`<div class="product i${i%4}"></div><div class="buyer-product-info"><small>${p.craft} · ${p.location}</small><b>${p.title}</b><strong>${p.price}</strong><button>View artwork →</button></div>`;buyers.appendChild(card)});installBuyerAI()}
-    const artistList=document.querySelector('.artist-list');if(artistList&&!artistList.dataset.demoExpanded){artistList.dataset.demoExpanded='true';demoArtisans.slice(3).forEach(a=>{const card=document.createElement('article');card.innerHTML=`<div class="portrait">✦</div><div><b>${a.name}</b><small>${a.craft} · ${a.location.split(',')[1]?.trim()||a.location}</small><p>${a.story}</p><button>View profile →</button></div>`;artistList.appendChild(card)})}
-    const empty=document.querySelector('.empty-large');if(empty&&/No orders yet/i.test(empty.textContent)&&!empty.dataset.demoExpanded){empty.dataset.demoExpanded='true';empty.innerHTML=`<div style="display:grid;gap:12px;text-align:left">${demoOrders.map(o=>`<article style="padding:16px;border:1px solid rgba(74,44,34,.12);border-radius:18px;background:#FFF9F0"><small>${o.id} · ${o.date}</small><b style="display:block;margin:6px 0">${o.product}</b><span>${o.artisan} · ${o.amount} · ${o.status}</span></article>`).join('')}</div>`}
-    if(document.querySelector('.buyer-products'))installBuyerAI();
-  };
-  new MutationObserver(()=>requestAnimationFrame(inject)).observe(document.body,{subtree:true,childList:true});window.addEventListener('load',inject);setTimeout(inject,300);
-}
-installHackathonDemo();
+  const inject=()=>{const root=document.getElementById('root');if(!root)return;const existing=document.getElementById('hackathon-demo-badge');if(!existing&&!document.querySelector('.dashboard')){const badge=document.createElement('div');badge.id='hackathon-demo-badge';badge.textContent='HACKATHON DEMO · Sample data';Object.assign(badge.style,{position:'fixed',bottom:'14px',right:'14px',zIndex:'9999',padding:'8px 12px',borderRadius:'999px',background:'#4A2C22',color:'#FFF9F0',font:'600 11px/1.2 system-ui',letterSpacing:'.08em',boxShadow:'0 8px 24px rgba(36,22,18,.18)'});document.body.appendChild(badge)}const marketplace=document.querySelector('.products');if(marketplace&&!marketplace.dataset.demoExpanded){marketplace.dataset.demoExpanded='true';demoProducts.slice(4,50).forEach((p,i)=>{const card=document.createElement('article');card.innerHTML=`<div class="product i${i%4}"></div><b>${p.title}</b><small>${p.craft} · ${p.location}</small><strong>${p.price}</strong>`;marketplace.appendChild(card)})}const buyers=document.querySelector('.buyer-products');if(buyers&&!buyers.dataset.demoExpanded){buyers.dataset.demoExpanded='true';demoProducts.forEach((p,i)=>{const card=document.createElement('article');card.innerHTML=`<div class="product i${i%4}"></div><div class="buyer-product-info"><small>${p.craft} · ${p.location}</small><b>${p.title}</b><strong>${p.price}</strong><button>View artwork →</button></div>`;buyers.appendChild(card)});installBuyerAI()}const artistList=document.querySelector('.artist-list');if(artistList&&!artistList.dataset.demoExpanded){artistList.dataset.demoExpanded='true';demoArtisans.slice(3).forEach(a=>{const card=document.createElement('article');card.innerHTML=`<div class="portrait">✦</div><div><b>${a.name}</b><small>${a.craft} · ${a.location.split(',')[1]?.trim()||a.location}</small><p>${a.story}</p><button>View profile →</button></div>`;artistList.appendChild(card)})}const empty=document.querySelector('.empty-large');if(empty&&/No orders yet/i.test(empty.textContent)&&!empty.dataset.demoExpanded){empty.dataset.demoExpanded='true';empty.innerHTML=`<div style="display:grid;gap:12px;text-align:left">${demoOrders.map(o=>`<article style="padding:16px;border:1px solid rgba(74,44,34,.12);border-radius:18px;background:#FFF9F0"><small>${o.id} · ${o.date}</small><b style="display:block;margin:6px 0">${o.product}</b><span>${o.artisan} · ${o.amount} · ${o.status}</span></article>`).join('')}</div>`}if(document.querySelector('.buyer-products'))installBuyerAI()};new MutationObserver(()=>requestAnimationFrame(inject)).observe(document.body,{subtree:true,childList:true});window.addEventListener('load',inject);setTimeout(inject,300)}installHackathonDemo();

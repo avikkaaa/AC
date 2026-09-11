@@ -11,16 +11,22 @@ const craftImages=[
   ['Contemporary Art','https://commons.wikimedia.org/wiki/Special:Redirect/file/Indian_contemporary_artist.jpg','Indian contemporary art — Wikimedia Commons']
 ];
 
-function addCraftImageStyles(){
+const storyImages=[
+  ['Meera Devi','https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=900&q=85','Artisan portrait'],
+  ['Raghav Sahu','https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=900&q=85','Artisan portrait'],
+  ['Ananya Rao','https://images.unsplash.com/photo-1531123897727-8f129e1688ce?auto=format&fit=crop&w=900&q=85','Artisan portrait']
+];
+
+function addRuntimeStyles(){
   if(document.getElementById('craft-image-runtime-styles'))return;
   const style=document.createElement('style');
   style.id='craft-image-runtime-styles';
-  style.textContent='.craft-img{position:relative;overflow:hidden;background:linear-gradient(135deg,var(--sand),var(--peach))}.craft-img img{width:100%;height:100%;display:block;object-fit:cover;transition:transform .45s ease,filter .35s ease}.craft:hover .craft-img img{transform:scale(1.06)}.craft-img:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(36,22,18,0),rgba(36,22,18,.16));pointer-events:none}.craft-img img:not([src]),.craft-img img[src=""]{display:none}@media(max-width:1000px){.craft-grid{grid-template-columns:repeat(3,1fr)}}@media(max-width:650px){.craft-grid{grid-template-columns:repeat(2,1fr)}.craft-img{height:165px}}';
+  style.textContent='.craft-img,.portrait{position:relative;overflow:hidden}.craft-img img,.portrait img{width:100%;height:100%;display:block;object-fit:cover;transition:transform .45s ease,filter .35s ease}.craft:hover .craft-img img,.stories article:hover .portrait img{transform:scale(1.06)}.craft-img:after,.portrait:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(36,22,18,0),rgba(36,22,18,.14));pointer-events:none}.craft-img img:not([src]),.craft-img img[src=""]{display:none}.portrait img{filter:saturate(.8) sepia(.08)}@media(max-width:1000px){.craft-grid{grid-template-columns:repeat(3,1fr)}}@media(max-width:650px){.craft-grid{grid-template-columns:repeat(2,1fr)}.craft-img{height:165px}}';
   document.head.appendChild(style);
 }
 
 function addCraftImages(){
-  addCraftImageStyles();
+  addRuntimeStyles();
   document.querySelectorAll('.craft-grid .craft').forEach((card,i)=>{
     const image=craftImages[i];
     const box=card.querySelector('.craft-img');
@@ -37,7 +43,26 @@ function addCraftImages(){
   });
 }
 
-const run=()=>requestAnimationFrame(addCraftImages);
-window.addEventListener('load',run);
-new MutationObserver(run).observe(document.body,{childList:true,subtree:true});
-setTimeout(run,200);
+function addStoryImages(){
+  document.querySelectorAll('.stories article .portrait').forEach((box,i)=>{
+    const image=storyImages[i];
+    if(!image||box.dataset.imageAdded==='true')return;
+    box.dataset.imageAdded='true';
+    box.innerHTML='';
+    const img=document.createElement('img');
+    img.src=image[1];
+    img.alt=`${image[0]} — ${image[2]}`;
+    img.loading='lazy';
+    img.decoding='async';
+    img.onerror=()=>{box.dataset.imageAdded='fallback';box.textContent=['✺','◌','✦'][i]||'✦';};
+    box.appendChild(img);
+  });
+}
+
+function run(){
+  addCraftImages();
+  addStoryImages();
+}
+window.addEventListener('load',()=>requestAnimationFrame(run));
+new MutationObserver(()=>requestAnimationFrame(run)).observe(document.body,{childList:true,subtree:true});
+setTimeout(run,250);

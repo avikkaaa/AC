@@ -8,7 +8,7 @@ const craftImages=[
   ['Pottery','https://commons.wikimedia.org/wiki/Special:Redirect/file/India_pottery.jpg','Indian pottery — Wikimedia Commons'],
   ['Weaving','https://commons.wikimedia.org/wiki/Special:Redirect/file/WeavingIndia.JPG','Indian weaving — Wikimedia Commons'],
   ['Woodcraft','https://commons.wikimedia.org/wiki/Special:Redirect/file/Indian_Wood_Carving.JPG','Indian wood carving — Wikimedia Commons'],
-  ['Contemporary Art','https://commons.wikimedia.org/wiki/Special:Redirect/file/Indian_contemporary_artist.jpg','Indian contemporary art — Wikimedia Commons']
+  ['Contemporary Art','https://commons.wikimedia.org/wiki/Special:Redirect/file/AK_Raina_abstract_painting_acrylic_on_canvas_2009.jpg','Indian contemporary abstract painting — Wikimedia Commons']
 ];
 
 // Real Indian artisan-at-work photography, sourced from craft/reporting pages.

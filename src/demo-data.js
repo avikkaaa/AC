@@ -7,7 +7,6 @@ export const demoArtisans=[
   {name:'Farida Begum',craft:'Kalamkari',location:'Machilipatnam, Andhra Pradesh',rating:'4.8',works:'21',story:'A textile artist combining hand-drawn motifs with traditional resist and natural-dye practices.'},
   {name:'Harpreet Kaur',craft:'Phulkari',location:'Patiala, Punjab',rating:'4.9',works:'16',story:'An embroidery artist reinterpreting family patterns for contemporary collectors and gifting.'}
 ];
-
 export const demoProducts=[
   {title:'Monsoon Garden Panel',craft:'Madhubani',price:'₹4,800',artisan:'Meera Devi',location:'Bihar',match:'94%'},
   {title:'Lotus Memory Vessel',craft:'Dhokra',price:'₹3,200',artisan:'Raghav Sahu',location:'Chhattisgarh',match:'91%'},
@@ -18,77 +17,72 @@ export const demoProducts=[
   {title:'Earth & Grain Wall Weave',craft:'Weaving',price:'₹8,900',artisan:'Ananya Rao',location:'Telangana',match:'88%'},
   {title:'Village Stories Triptych',craft:'Warli',price:'₹6,100',artisan:'Demo artisan',location:'Maharashtra',match:'90%'}
 ];
-
 export const demoOpportunities=[
   {buyer:'Casa Terra Interiors',category:'Home Decor & Interiors',product:'Handmade wall objects',fit:'96%',value:'₹25k–₹60k / order',status:'New'},
   {buyer:'Museum Craft Store',category:'Museum & Cultural Spaces',product:'Story-led Indian craft',fit:'92%',value:'₹15k–₹40k / order',status:'Review'},
   {buyer:'The Curated Edit',category:'Art Collectors',product:'Contemporary craft',fit:'89%',value:'₹20k–₹50k / order',status:'New'},
   {buyer:'Heritage Hotels Collective',category:'Hospitality & Boutique Hotels',product:'Decorative craft objects',fit:'87%',value:'₹30k–₹80k / order',status:'Shortlisted'}
 ];
-
 export const demoOrders=[
   {id:'AC-DEMO-1042',product:'Monsoon Garden Panel',artisan:'Meera Devi',amount:'₹4,800',status:'Delivered',date:'12 Aug 2026'},
   {id:'AC-DEMO-1031',product:'Lotus Memory Vessel',artisan:'Raghav Sahu',amount:'₹3,200',status:'In transit',date:'28 Aug 2026'},
   {id:'AC-DEMO-1018',product:'Indigo Geometry Saree',artisan:'Ananya Rao',amount:'₹6,900',status:'Confirmed',date:'03 Sep 2026'}
 ];
-
 export const demoSaved=[
   {title:'Birds of the Coast',artisan:'Savitri Patnaik',price:'₹5,600'},
   {title:'Phulkari Sunburst',artisan:'Harpreet Kaur',price:'₹5,400'},
   {title:'Forest Lines Textile',artisan:'Farida Begum',price:'₹7,200'}
 ];
 
-export function installHackathonDemo(){
-  if(window.__artisanConnectDemoInstalled)return;
-  window.__artisanConnectDemoInstalled=true;
-  const inject=()=>{
-    const path=location.hash;
-    const root=document.getElementById('root');
-    if(!root)return;
-    const existing=document.getElementById('hackathon-demo-badge');
-    if(!existing&&!document.querySelector('.dashboard')){
-      const badge=document.createElement('div');
-      badge.id='hackathon-demo-badge';
-      badge.textContent='HACKATHON DEMO · Sample data';
-      Object.assign(badge.style,{position:'fixed',bottom:'14px',right:'14px',zIndex:'9999',padding:'8px 12px',borderRadius:'999px',background:'#4A2C22',color:'#FFF9F0',font:'600 11px/1.2 system-ui',letterSpacing:'.08em',boxShadow:'0 8px 24px rgba(36,22,18,.18)'});
-      document.body.appendChild(badge);
-    }
-    const marketplace=document.querySelector('.products');
-    if(marketplace&&!marketplace.dataset.demoExpanded){
-      marketplace.dataset.demoExpanded='true';
-      demoProducts.slice(4,8).forEach((p,i)=>{
-        const card=document.createElement('article');
-        card.innerHTML=`<div class="product i${i%4}"></div><b>${p.title}</b><small>${p.craft} · ${p.location}</small><strong>${p.price}</strong>`;
-        marketplace.appendChild(card);
-      });
-    }
-    const buyers=document.querySelector('.buyer-products');
-    if(buyers&&!buyers.dataset.demoExpanded){
-      buyers.dataset.demoExpanded='true';
-      demoProducts.slice(4).forEach((p,i)=>{
-        const card=document.createElement('article');
-        card.innerHTML=`<div class="product i${i%4}"></div><div class="buyer-product-info"><small>${p.craft} · ${p.location}</small><b>${p.title}</b><strong>${p.price}</strong><button>View artwork →</button></div>`;
-        buyers.appendChild(card);
-      });
-    }
-    const artistList=document.querySelector('.artist-list');
-    if(artistList&&!artistList.dataset.demoExpanded){
-      artistList.dataset.demoExpanded='true';
-      demoArtisans.slice(3).forEach(a=>{
-        const card=document.createElement('article');
-        card.innerHTML=`<div class="portrait">✦</div><div><b>${a.name}</b><small>${a.craft} · ${a.location.split(',')[1]?.trim()||a.location}</small><p>${a.story}</p><button>View profile →</button></div>`;
-        artistList.appendChild(card);
-      });
-    }
-    const empty=document.querySelector('.empty-large');
-    if(empty&&/No orders yet/i.test(empty.textContent)&&!empty.dataset.demoExpanded){
-      empty.dataset.demoExpanded='true';
-      empty.innerHTML=`<div style="display:grid;gap:12px;text-align:left">${demoOrders.map(o=>`<article style="padding:16px;border:1px solid rgba(74,44,34,.12);border-radius:18px;background:#FFF9F0"><small>${o.id} · ${o.date}</small><b style="display:block;margin:6px 0">${o.product}</b><span>${o.artisan} · ${o.amount} · ${o.status}</span></article>`).join('')}</div>`;
-    }
-  };
-  new MutationObserver(()=>requestAnimationFrame(inject)).observe(document.body,{subtree:true,childList:true});
-  window.addEventListener('load',inject);
-  setTimeout(inject,300);
+function addBuyerMatchStyles(){
+  if(document.getElementById('buyer-match-styles'))return;
+  const style=document.createElement('style');style.id='buyer-match-styles';style.textContent=`
+    .ai-buyer-panel{margin-bottom:28px;padding:26px;border:1px solid rgba(74,44,34,.14);border-radius:24px;background:linear-gradient(135deg,#fff9f0,#f7f0e5);box-shadow:0 12px 36px rgba(74,44,34,.08)}
+    .ai-buyer-panel h2{margin:5px 0 8px}.ai-buyer-panel p{margin:0 0 16px}.ai-buyer-form{display:grid;grid-template-columns:1fr 160px 170px auto;gap:10px;align-items:end}.ai-buyer-form label{display:grid;gap:6px;font-size:12px;font-weight:700}.ai-buyer-form input,.ai-buyer-form select{width:100%;box-sizing:border-box;padding:12px 13px;border:1px solid rgba(74,44,34,.18);border-radius:12px;background:#fff9f0;color:#241612}.ai-buyer-form button{border:0;border-radius:12px;padding:13px 17px;background:#93442e;color:#fff9f0;font-weight:700;cursor:pointer}.ai-buyer-status{margin-top:12px;font-size:12px}.ai-match-results{display:grid;gap:10px;margin-top:18px}.ai-match-card{display:grid;grid-template-columns:1fr auto;gap:8px 16px;padding:15px;border-radius:17px;background:#fff9f0;border:1px solid rgba(74,44,34,.1)}.ai-match-card.best{border-color:#b85c38;box-shadow:0 5px 18px rgba(184,92,56,.12)}.ai-match-card small{display:block;color:#713b3b}.ai-match-card b{display:block;margin:4px 0}.ai-match-score{text-align:right;font-size:22px;font-weight:800;color:#93442e}.ai-match-score small{font-size:10px;text-transform:uppercase;letter-spacing:.08em}.ai-match-reason{grid-column:1/-1;margin:0;font-size:12px}.ai-match-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px}.ai-match-tag{padding:4px 8px;border-radius:999px;background:#f2c4ae;font-size:10px}.ai-match-note{margin-top:12px;font-size:11px;color:#713b3b}
+    @media(max-width:850px){.ai-buyer-form{grid-template-columns:1fr 1fr}.ai-buyer-form input{grid-column:1/-1}.ai-buyer-form button{grid-column:1/-1}.ai-match-card{grid-template-columns:1fr}.ai-match-score{text-align:left}}
+  `;document.head.appendChild(style);
 }
 
+function installBuyerAI(){
+  const panelHost=document.querySelector('.dashboard-content');
+  if(!panelHost||document.querySelector('.ai-buyer-panel')||!document.querySelector('.buyer-products'))return;
+  addBuyerMatchStyles();
+  const panel=document.createElement('section');panel.className='ai-buyer-panel';panel.innerHTML=`
+    <span class="eyebrow">✦ AI BUYER MATCH</span>
+    <h2>Tell us what you are looking for.</h2>
+    <p>Describe the artwork, craft, style or purpose you want. AI categorises your intent and ranks the catalog from strongest match to similar alternatives.</p>
+    <form class="ai-buyer-form">
+      <label>What do you want?<input name="preferences" placeholder="e.g. colorful wall art for a modern living room" required></label>
+      <label>Budget<select name="budget"><option value="">Any budget</option><option>Under ₹5,000</option><option>₹5,000–₹10,000</option><option>₹10,000+</option></select></label>
+      <label>Purpose<select name="purpose"><option value="">Any purpose</option><option>Home decor</option><option>Gift</option><option>Collecting</option><option>Fashion</option></select></label>
+      <button type="submit">✦ Find my matches</button>
+    </form><div class="ai-buyer-status"></div><div class="ai-match-results"></div>
+    <div class="ai-match-note">AI scores are recommendations based on the buyer request and catalog data — not a guarantee.</div>`;
+  panelHost.insertBefore(panel,panelHost.firstElementChild);
+  const form=panel.querySelector('form'),status=panel.querySelector('.ai-buyer-status'),results=panel.querySelector('.ai-match-results');
+  form.addEventListener('submit',async e=>{
+    e.preventDefault();const fd=new FormData(form);const body=Object.fromEntries(fd.entries());
+    status.textContent='AI is understanding your preferences and ranking artwork…';results.innerHTML='';form.querySelector('button').disabled=true;
+    try{
+      const response=await fetch('/api/buyer-match',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});const data=await response.json();if(!response.ok)throw Error(data.error||'Matching failed');
+      status.innerHTML=`<b>${data.category}</b> · ${data.intent}`;
+      results.innerHTML=data.matches.map((m,i)=>{const p=m.product;return `<article class="ai-match-card ${i===0?'best':''}"><div><small>${m.match_level} · ${p.craft} · ${p.location}</small><b>${p.title}</b><small>${p.artisan} · ${p.price}</small><div class="ai-match-tags">${p.tags?.map(t=>`<span class="ai-match-tag">${t}</span>`).join('')||''}</div></div><div class="ai-match-score">${m.match_percentage}%<small>AI match</small></div><p class="ai-match-reason">${m.reason}</p></article>`}).join('');
+    }catch(error){status.textContent=error.message||'Could not generate matches. Please try again.'}finally{form.querySelector('button').disabled=false}
+  });
+}
+
+export function installHackathonDemo(){
+  if(window.__artisanConnectDemoInstalled)return;window.__artisanConnectDemoInstalled=true;
+  const inject=()=>{
+    const root=document.getElementById('root');if(!root)return;
+    const existing=document.getElementById('hackathon-demo-badge');
+    if(!existing&&!document.querySelector('.dashboard')){const badge=document.createElement('div');badge.id='hackathon-demo-badge';badge.textContent='HACKATHON DEMO · Sample data';Object.assign(badge.style,{position:'fixed',bottom:'14px',right:'14px',zIndex:'9999',padding:'8px 12px',borderRadius:'999px',background:'#4A2C22',color:'#FFF9F0',font:'600 11px/1.2 system-ui',letterSpacing:'.08em',boxShadow:'0 8px 24px rgba(36,22,18,.18)'});document.body.appendChild(badge)}
+    const marketplace=document.querySelector('.products');if(marketplace&&!marketplace.dataset.demoExpanded){marketplace.dataset.demoExpanded='true';demoProducts.slice(4,8).forEach((p,i)=>{const card=document.createElement('article');card.innerHTML=`<div class="product i${i%4}"></div><b>${p.title}</b><small>${p.craft} · ${p.location}</small><strong>${p.price}</strong>`;marketplace.appendChild(card)})}
+    const buyers=document.querySelector('.buyer-products');if(buyers&&!buyers.dataset.demoExpanded){buyers.dataset.demoExpanded='true';demoProducts.slice(4).forEach((p,i)=>{const card=document.createElement('article');card.innerHTML=`<div class="product i${i%4}"></div><div class="buyer-product-info"><small>${p.craft} · ${p.location}</small><b>${p.title}</b><strong>${p.price}</strong><button>View artwork →</button></div>`;buyers.appendChild(card)});installBuyerAI()}
+    const artistList=document.querySelector('.artist-list');if(artistList&&!artistList.dataset.demoExpanded){artistList.dataset.demoExpanded='true';demoArtisans.slice(3).forEach(a=>{const card=document.createElement('article');card.innerHTML=`<div class="portrait">✦</div><div><b>${a.name}</b><small>${a.craft} · ${a.location.split(',')[1]?.trim()||a.location}</small><p>${a.story}</p><button>View profile →</button></div>`;artistList.appendChild(card)})}
+    const empty=document.querySelector('.empty-large');if(empty&&/No orders yet/i.test(empty.textContent)&&!empty.dataset.demoExpanded){empty.dataset.demoExpanded='true';empty.innerHTML=`<div style="display:grid;gap:12px;text-align:left">${demoOrders.map(o=>`<article style="padding:16px;border:1px solid rgba(74,44,34,.12);border-radius:18px;background:#FFF9F0"><small>${o.id} · ${o.date}</small><b style="display:block;margin:6px 0">${o.product}</b><span>${o.artisan} · ${o.amount} · ${o.status}</span></article>`).join('')}</div>`}
+    if(document.querySelector('.buyer-products'))installBuyerAI();
+  };
+  new MutationObserver(()=>requestAnimationFrame(inject)).observe(document.body,{subtree:true,childList:true});window.addEventListener('load',inject);setTimeout(inject,300);
+}
 installHackathonDemo();

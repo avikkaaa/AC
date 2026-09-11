@@ -1,12 +1,9 @@
-function limitLandingProducts(){
+function removeLandingMarketplace(){
   if(document.querySelector('.dashboard'))return;
-  const grid=document.querySelector('.marketplace .products, main > .marketplace .products, .products');
-  if(!grid)return;
-  const cards=[...grid.querySelectorAll(':scope > article')];
-  cards.slice(4).forEach(card=>card.remove());
-  grid.dataset.demoExpanded='true';
+  const marketplace=document.querySelector('.marketplace');
+  if(marketplace)marketplace.remove();
 }
-new MutationObserver(()=>requestAnimationFrame(limitLandingProducts)).observe(document.body,{subtree:true,childList:true});
-window.addEventListener('load',limitLandingProducts);
-setTimeout(limitLandingProducts,350);
-setTimeout(limitLandingProducts,800);
+new MutationObserver(()=>requestAnimationFrame(removeLandingMarketplace)).observe(document.body,{subtree:true,childList:true});
+window.addEventListener('load',removeLandingMarketplace);
+setTimeout(removeLandingMarketplace,250);
+setTimeout(removeLandingMarketplace,700);

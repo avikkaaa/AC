@@ -11,7 +11,16 @@ const craftImages=[
   ['Contemporary Art','https://commons.wikimedia.org/wiki/Special:Redirect/file/Indian_contemporary_artist.jpg','Indian contemporary art — Wikimedia Commons']
 ];
 
+function addCraftImageStyles(){
+  if(document.getElementById('craft-image-runtime-styles'))return;
+  const style=document.createElement('style');
+  style.id='craft-image-runtime-styles';
+  style.textContent='.craft-img{position:relative;overflow:hidden;background:linear-gradient(135deg,var(--sand),var(--peach))}.craft-img img{width:100%;height:100%;display:block;object-fit:cover;transition:transform .45s ease,filter .35s ease}.craft:hover .craft-img img{transform:scale(1.06)}.craft-img:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(36,22,18,0),rgba(36,22,18,.16));pointer-events:none}.craft-img img:not([src]),.craft-img img[src=""]{display:none}@media(max-width:1000px){.craft-grid{grid-template-columns:repeat(3,1fr)}}@media(max-width:650px){.craft-grid{grid-template-columns:repeat(2,1fr)}.craft-img{height:165px}}';
+  document.head.appendChild(style);
+}
+
 function addCraftImages(){
+  addCraftImageStyles();
   document.querySelectorAll('.craft-grid .craft').forEach((card,i)=>{
     const image=craftImages[i];
     const box=card.querySelector('.craft-img');
@@ -23,6 +32,7 @@ function addCraftImages(){
     img.alt=image[2];
     img.loading='lazy';
     img.decoding='async';
+    img.onerror=()=>{box.dataset.imageAdded='fallback';box.innerHTML='<span>✦</span>';};
     box.appendChild(img);
   });
 }

@@ -8,71 +8,85 @@ function setReactInput(input,value){
   input.dispatchEvent(new Event('change',{bubbles:true}));
 }
 
-function removeRepeatedMatchBox(){
-  document.querySelectorAll('section,article,div').forEach(el=>{
-    const text=el.textContent?.trim()||'';
-    if((text.includes('AI BUYER MATCH')||text.includes('Tell us what you are looking for.'))&&el.querySelector('input,select,button')){
-      const box=el.closest('section')||el;
-      if(!box.classList.contains('workspace-panel'))box.remove();
-    }
-  });
+function getBuyer(){
+  try{return JSON.parse(localStorage.getItem('ac-buyer-details')||'{}')}catch{return{}}
+}
+
+function savePreference(value){
+  const data=getBuyer();
+  data.preference=value;
+  localStorage.setItem('ac-buyer-details',JSON.stringify(data));
+}
+
+function removeOldBuyerMatch(){
+  document.querySelectorAll('.ai-buyer-panel').forEach(el=>el.remove());
 }
 
 function patchBuyerForm(){
   if(localStorage.getItem('ac-user-role')!=='buyer')return;
-  removeRepeatedMatchBox();
+  removeOldBuyerMatch();
 
-  const panel=[...document.querySelectorAll('.workspace-panel')].find(x=>x.textContent.includes('PERSONALIZED DISCOVERY')||x.querySelector('input[placeholder*="Madhubani"]'));
+  const panel=[...document.querySelectorAll('.workspace-panel')].find(el=>
+    el.textContent.includes('PERSONALIZED DISCOVERY')||el.querySelector('input[placeholder*="Madhubani"]')
+  );
   if(!panel)return;
 
   const prefInput=[...panel.querySelectorAll('input')].find(i=>i.placeholder?.toLowerCase().includes('madhubani painting'));
-  if(prefInput){
-    prefInput.closest('label')?.setAttribute('style','display:none');
-  }
-
+  if(prefInput)prefInput.closest('label')?.setAttribute('style','display:none');
   panel.querySelector('.buyer-craft-options')?.setAttribute('style','display:none');
 
-  const budgetSelect=[...panel.querySelectorAll('select')].find(s=>s.closest('label')?.textContent?.toLowerCase().includes('budget'));
-  if(budgetSelect&&budgetSelect.dataset.acBudgetPatched!=='1'){
-    budgetSelect.dataset.acBudgetPatched='1';
-    const current=budgetSelect.value;
-    budgetSelect.innerHTML='<option value="">Choose your budget</option>'+AC_BUDGETS.map(x=>`<option value="${x}">${x}</option>`).join('');
-    if(AC_BUDGETS.includes(current))budgetSelect.value=current;
+  const budget=[...panel.querySelectorAll('select')].find(s=>s.closest('label')?.textContent?.toLowerCase().includes('budget'));
+  if(budget&&!budget.dataset.acBudgetPatched){
+    const current=budget.value;
+    budget.innerHTML='<option value="">Choose your budget</option>'+AC_BUDGETS.map(x=>`<option value="${x}">${x}</option>`).join('');
+    if(AC_BUDGETS.includes(current))budget.value=current;
+    budget.dataset.acBudgetPatched='1';
   }
-
-  let saved={};
-  try{saved=JSON.parse(localStorage.getItem('ac-buyer-details')||'{}')}catch{}
 
   let picker=panel.querySelector('#ac-art-type-picker');
   if(!picker){
     picker=document.createElement('div');
     picker.id='ac-art-type-picker';
-    picker.innerHTML=`<label class="ac-art-label">Select art type</label><div class="ac-art-options"></div>`;
+    picker.innerHTML='<label class="ac-art-label">Select art type</label><div class="ac-art-options"></div>';
     const form=panel.querySelector('.seller-form')||panel;
     const next=[...form.querySelectorAll('button')].find(b=>b.textContent.includes('Next'));
     form.insertBefore(picker,next||null);
+
+    const options=picker.querySelector('.ac-art-options');
+    options.innerHTML=AC_ART_TYPES.map(x=>`<button type="button" data-art="${x}">${x}</button>`).join('');
+    options.addEventListener('click',e=>{
+      const btn=e.target.closest('[data-art]');
+      if(!btn)return;
+      const art=btn.dataset.art;
+      savePreference(art);
+      if(prefInput)setReactInput(prefInput,art);
+      options.querySelectorAll('button').forEach(b=>{
+        const selected=b.dataset.art===art;
+        b.classList.toggle('selected',selected);
+        b.textContent=(selected?'✓ ':'')+b.dataset.art;
+      });
+    });
   }
 
-  const selected=saved.preference||'';
-  const options=picker.querySelector('.ac-art-options');
-  options.innerHTML=AC_ART_TYPES.map(x=>`<button type="button" class="${selected===x?'selected':''}" data-art="${x}">${selected===x?'✓ ':''}${x}</button>`).join('');
-  options.querySelectorAll('button').forEach(btn=>btn.onclick=()=>{
-    const art=btn.dataset.art;
-    let data={};try{data=JSON.parse(localStorage.getItem('ac-buyer-details')||'{}')}catch{}
-    data.preference=art;
-    localStorage.setItem('ac-buyer-details',JSON.stringify(data));
-    if(prefInput)setReactInput(prefInput,art);
-    patchBuyerForm();
+  const selected=getBuyer().preference||'';
+  picker.querySelectorAll('[data-art]').forEach(btn=>{
+    const on=btn.dataset.art===selected;
+    btn.classList.toggle('selected',on);
+    btn.textContent=(on?'✓ ':'')+btn.dataset.art;
   });
-
   if(selected&&prefInput&&prefInput.value!==selected)setReactInput(prefInput,selected);
+
   const intro=panel.querySelector('.workspace-intro');
-  if(intro)intro.textContent='Enter your details, choose your budget and select one art type. AI suggestions come next.';
+  const text='Enter your details, choose your budget and select one art type. AI suggestions come next.';
+  if(intro&&intro.textContent!==text)intro.textContent=text;
 }
 
-const style=document.createElement('style');
-style.textContent=`#ac-art-type-picker{margin-top:18px}.ac-art-label{display:block;font-weight:800;margin-bottom:10px}.ac-art-options{display:flex;flex-wrap:wrap;gap:9px}.ac-art-options button{border:1px solid rgba(92,53,33,.2);background:#fffaf2;color:var(--espresso);padding:9px 13px;border-radius:999px;font-weight:700;cursor:pointer}.ac-art-options button.selected{background:var(--rust);border-color:var(--rust);color:white}`;
-document.head.appendChild(style);
+if(!document.getElementById('ac-art-type-style')){
+  const style=document.createElement('style');
+  style.id='ac-art-type-style';
+  style.textContent=`#ac-art-type-picker{margin-top:18px}.ac-art-label{display:block;font-weight:800;margin-bottom:10px}.ac-art-options{display:flex;flex-wrap:wrap;gap:9px}.ac-art-options button{border:1px solid rgba(92,53,33,.2);background:#fffaf2;color:var(--espresso);padding:9px 13px;border-radius:999px;font-weight:700;cursor:pointer}.ac-art-options button.selected{background:var(--rust);border-color:var(--rust);color:white}`;
+  document.head.appendChild(style);
+}
 
 new MutationObserver(()=>requestAnimationFrame(patchBuyerForm)).observe(document.body,{childList:true,subtree:true});
 window.addEventListener('load',patchBuyerForm);

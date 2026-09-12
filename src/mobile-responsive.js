@@ -30,7 +30,7 @@ mobileStyle.textContent=`
   header nav{display:none}
   .logo{font-size:17px;max-width:150px;overflow:hidden;text-overflow:ellipsis}
   .head-actions,.dashboard-user{gap:7px;min-width:0}
-  .head-actions select,.dashboard-user select{max-width:92px;font-size:12px}
+  .head-actions select,.dashboard-user select{display:block!important;max-width:92px;min-width:78px;height:38px;padding:0 7px;border:1px solid rgba(74,44,34,.16);border-radius:10px;background:var(--ivory);font-size:12px;color:var(--brown)}
   .login{height:42px;padding:0 13px;border-radius:11px;font-size:12px}
 
   section{padding:58px 18px}
@@ -120,7 +120,8 @@ mobileStyle.textContent=`
 }
 
 @media (max-width: 420px){
-  .head-actions select{display:none}
+  .head-actions select,.dashboard-user select{display:block!important;max-width:80px;min-width:72px;height:36px;padding:0 5px;font-size:11px}
+  .head-actions{margin-left:auto}
   .hero-art{height:320px}
   .arch{width:220px;height:285px}
   .insight{font-size:9px}

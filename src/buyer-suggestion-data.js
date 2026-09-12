@@ -20,6 +20,7 @@ for(let i=1;i<=10;i++)SPRITE_INDEX['dbs'+i]=69+i;
 for(let i=1;i<=10;i++)SPRITE_INDEX['dsp'+i]=79+i;
 for(let i=1;i<=10;i++)SPRITE_INDEX['dpt'+i]=89+i;
 function imageStyle(item){
+  const ai=window.acAIPhotoStyle?.(item);if(ai)return ai;
   const n=SPRITE_INDEX[String(item?.id||'')];
   if(n==null)return '';
   const col=n%10,row=Math.floor(n/10);
@@ -56,10 +57,10 @@ function render(){
   const{items,pref,budgetRelaxed}=chooseItems();if(!items.length)return;
   const sig=pref+'|'+getBuyer().budget+'|'+items.map(x=>x.id).join(',');if(grid.dataset.catalogSig===sig&&grid.querySelector('.ac-ai-data-card'))return;
   grid.dataset.catalogSig=sig;
-  grid.innerHTML=items.map((x,i)=>`<article class="ac-ai-data-card" data-product-id="${esc(x.id)}"><div class="ac-ai-data-art">${visual(x)}</div><div class="buyer-product-info"><small>${esc(x.type)} · ${esc(x.location||'India')}</small><b>${esc(x.name)}</b><strong>${money(fixedPrice(x.price))}</strong><small>${Math.max(72,98-i*2)}% match</small><p>${esc(reason(x,pref,budgetRelaxed))}</p><div class="ac-fixed-tag">${x.sellerEntered?`New seller listing · ${esc(x.artisan)}`:'Fixed price · uploaded catalog'}</div><button class="btn primary" data-buy="${esc(x.id)}">Buy now →</button></div></article>`).join('');
+  grid.innerHTML=items.map((x,i)=>`<article class="ac-ai-data-card" data-product-id="${esc(x.id)}"><div class="ac-ai-data-art">${visual(x)}</div><div class="buyer-product-info"><small>${esc(x.type)} · ${esc(x.location||'India')}</small><b>${esc(x.name)}</b><strong>${money(fixedPrice(x.price))}</strong><small>${Math.max(72,98-i*2)}% match</small><p>${esc(reason(x,pref,budgetRelaxed))}</p><div class="ac-fixed-tag">${x.sellerEntered?`New seller listing · ${esc(x.artisan)}`:`Fixed price · ${window.AC_AI_PHOTOS?.[x.id]!=null?'AI photo':'uploaded catalog'}`}</div><button class="btn primary" data-buy="${esc(x.id)}">Buy now →</button></div></article>`).join('');
   grid.querySelectorAll('[data-buy]').forEach(b=>b.onclick=()=>checkout(items.find(x=>x.id===b.dataset.buy)));
 }
-const style=document.createElement('style');style.textContent=`.ac-ai-data-card{overflow:hidden}.ac-ai-data-art{height:190px;position:relative;background:#ead3bd;overflow:hidden}.ac-ai-data-art>img,.ac-sprite-image{width:100%;height:100%;object-fit:cover;display:block}.ac-sprite-image{background-color:#ead3bd}.ac-fixed-tag{display:inline-flex;align-self:flex-start;padding:5px 8px;border-radius:999px;background:rgba(188,82,43,.09);color:var(--rust);font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.04em}.ac-ai-data-card .buyer-product-info{height:auto}.ac-ai-data-card .buyer-product-info p{min-height:44px}@media(max-width:560px){.ac-ai-data-art{height:165px}}`;
+const style=document.createElement('style');style.textContent=`.ac-ai-data-card{overflow:hidden}.ac-ai-data-art{height:190px;position:relative;background:#ead3bd;overflow:hidden}.ac-ai-data-art>img,.ac-sprite-image{width:100%;height:100%;object-fit:cover;display:block}.ac-sprite-image{background-color:#ead3bd;background-position:center;background-size:cover}.ac-fixed-tag{display:inline-flex;align-self:flex-start;padding:5px 8px;border-radius:999px;background:rgba(188,82,43,.09);color:var(--rust);font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.04em}.ac-ai-data-card .buyer-product-info{height:auto}.ac-ai-data-card .buyer-product-info p{min-height:44px}@media(max-width:560px){.ac-ai-data-art{height:165px}}`;
 document.head.appendChild(style);
 window.addEventListener('storage',render);
 window.addEventListener('load',()=>setTimeout(render,250),{once:true});

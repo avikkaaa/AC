@@ -1,48 +1,78 @@
-let deferredInstallPrompt=null;
+let deferredInstallPrompt = null;
+const PWA_VERSION = 'v8';
+const ACTIVE_CACHE = `artisan-connect-pwa-${PWA_VERSION}`;
 
-function isStandalone(){
-  return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone===true;
+function isStandalone() {
+  return (
+    window.matchMedia('(display-mode: standalone)').matches ||
+    window.navigator.standalone === true
+  );
 }
 
-function removeInstallButton(){
+function removeInstallButton() {
   document.querySelector('#ac-pwa-install')?.remove();
 }
 
-function showInstallButton(){
-  if(!deferredInstallPrompt || isStandalone() || document.querySelector('#ac-pwa-install')) return;
-  const button=document.createElement('button');
-  button.id='ac-pwa-install';
-  button.type='button';
-  button.textContent='Install Artisan Connect';
-  button.style.cssText='position:fixed;right:16px;bottom:16px;z-index:9999;border:0;border-radius:999px;padding:12px 16px;background:#A4472E;color:#fff;font:700 14px system-ui;box-shadow:0 10px 28px rgba(61,35,22,.25);cursor:pointer';
-  button.addEventListener('click',async()=>{
-    if(!deferredInstallPrompt) return;
+function showInstallButton() {
+  if (!deferredInstallPrompt || isStandalone() || document.querySelector('#ac-pwa-install')) {
+    return;
+  }
+
+  const button = document.createElement('button');
+  button.id = 'ac-pwa-install';
+  button.type = 'button';
+  button.textContent = 'Install Artisan Connect';
+  button.style.cssText =
+    'position:fixed;right:16px;bottom:16px;z-index:9999;border:0;border-radius:999px;padding:12px 16px;background:#A4472E;color:#fff;font:700 14px system-ui;box-shadow:0 10px 28px rgba(61,35,22,.25);cursor:pointer';
+
+  button.addEventListener('click', async () => {
+    if (!deferredInstallPrompt) return;
     deferredInstallPrompt.prompt();
-    try{await deferredInstallPrompt.userChoice;}catch{}
-    deferredInstallPrompt=null;
+    try {
+      await deferredInstallPrompt.userChoice;
+    } catch {}
+    deferredInstallPrompt = null;
     removeInstallButton();
   });
+
   document.body.appendChild(button);
 }
 
-window.addEventListener('beforeinstallprompt',event=>{
+async function clearLegacyCaches() {
+  if (!('caches' in window)) return;
+  try {
+    const keys = await caches.keys();
+    await Promise.all(
+      keys.filter((key) => key !== ACTIVE_CACHE).map((key) => caches.delete(key))
+    );
+  } catch {}
+}
+
+window.addEventListener('beforeinstallprompt', (event) => {
   event.preventDefault();
-  deferredInstallPrompt=event;
+  deferredInstallPrompt = event;
   showInstallButton();
 });
 
-window.addEventListener('appinstalled',()=>{
-  deferredInstallPrompt=null;
+window.addEventListener('appinstalled', () => {
+  deferredInstallPrompt = null;
   removeInstallButton();
 });
 
-if('serviceWorker' in navigator){
-  window.addEventListener('load',async()=>{
-    try{
-      const registration=await navigator.serviceWorker.register('/sw.js',{scope:'/'});
-      registration.update().catch(()=>{});
-    }catch(error){
-      console.warn('PWA service worker registration failed',error);
-    }
-  },{once:true});
+if ('serviceWorker' in navigator) {
+  window.addEventListener(
+    'load',
+    async () => {
+      try {
+        await clearLegacyCaches();
+        const registration = await navigator.serviceWorker.register(`/sw.js?${PWA_VERSION}`, {
+          scope: '/',
+        });
+        await registration.update().catch(() => {});
+      } catch (error) {
+        console.warn('PWA service worker registration failed', error);
+      }
+    },
+    { once: true }
+  );
 }

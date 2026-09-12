@@ -1,0 +1,1 @@
+PWA app icons use the official Artisan Connect logo artwork already used by the site.

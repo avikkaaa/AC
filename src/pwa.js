@@ -1,5 +1,5 @@
 let deferredInstallPrompt = null;
-const PWA_VERSION = 'v8';
+const PWA_VERSION = 'v10';
 const ACTIVE_CACHE = `artisan-connect-pwa-${PWA_VERSION}`;
 
 function isStandalone() {

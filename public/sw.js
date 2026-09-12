@@ -1,5 +1,5 @@
-const CACHE='artisan-connect-pwa-v3';
-const APP_SHELL=['/','/manifest.webmanifest','/pwa-192.png','/pwa-512.png','/pwa-maskable-512.png'];
+const CACHE='artisan-connect-pwa-v4';
+const APP_SHELL=['/','/manifest.webmanifest','/pwa-icon.svg?v=4','/pwa-maskable.svg?v=4','/pwa-192.png','/pwa-512.png'];
 
 self.addEventListener('install',event=>{
   event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(APP_SHELL)).then(()=>self.skipWaiting()));
@@ -32,15 +32,14 @@ self.addEventListener('fetch',event=>{
   }
 
   event.respondWith(
-    caches.match(event.request).then(cached=>{
-      const network=fetch(event.request).then(response=>{
+    fetch(event.request)
+      .then(response=>{
         if(response && response.ok){
           const copy=response.clone();
           caches.open(CACHE).then(cache=>cache.put(event.request,copy)).catch(()=>{});
         }
         return response;
-      });
-      return cached || network;
-    })
+      })
+      .catch(()=>caches.match(event.request))
   );
 });

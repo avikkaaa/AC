@@ -1,9 +1,9 @@
 {
-  "id": "/?pwa=v6",
+  "id": "/?pwa=v8",
   "name": "Artisan Connect",
   "short_name": "ArtisanConnect",
   "description": "AI-assisted marketplace connecting Indian artisans with buyers.",
-  "start_url": "/?pwa=v6",
+  "start_url": "/?pwa=v8",
   "scope": "/",
   "display": "standalone",
   "orientation": "portrait-primary",
@@ -13,13 +13,13 @@
   "categories": ["shopping", "lifestyle"],
   "icons": [
     {
-      "src": "/pwa-icon.svg?v=6",
+      "src": "/pwa-icon.svg?v=8",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any"
     },
     {
-      "src": "/pwa-icon.svg?v=6",
+      "src": "/pwa-icon.svg?v=8",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "maskable"

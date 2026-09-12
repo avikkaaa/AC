@@ -1,5 +1,5 @@
-const CACHE='artisan-connect-pwa-v4';
-const APP_SHELL=['/','/manifest.webmanifest','/pwa-icon.svg?v=4','/pwa-maskable.svg?v=4','/pwa-192.png','/pwa-512.png'];
+const CACHE='artisan-connect-pwa-v6';
+const APP_SHELL=['/','/manifest.webmanifest?v=6','/pwa-icon.svg?v=6'];
 
 self.addEventListener('install',event=>{
   event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(APP_SHELL)).then(()=>self.skipWaiting()));

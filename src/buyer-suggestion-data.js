@@ -10,10 +10,21 @@ const groups={
   bamboo:['Bamboo & Cane'],'pottery & ceramics':['Ceramics'],'embroidery & textiles':['Embroidery & Textile'],
   'attar / perfumes':['Attar'],'metal art':['Metal Art'],showpieces:['Showpieces']
 };
-const GROUP_SPRITES={dat:'/catalog/attar.webp',dbg:'/catalog/bags.webp',dbs:'/catalog/baskets.webp',dsp:'/catalog/showpieces.webp'};
-const OLD_INDEX={dat1:0,dat2:1,dat3:11,dat4:22,dat5:33,dat6:44,dat7:46,dat8:47,dat9:48,dat10:49,dbg1:2,dbg2:3,dbg3:4,dbg4:5,dbg5:6,dbg6:7,dbg7:8,dbg8:9,dbg9:10,dbg10:12,dbs1:13,dbs2:14,dbs3:15,dbs4:16,dbs5:17,dbs6:18,dbs7:19,dbs8:20,dbs9:21,dbs10:23,dsp1:24,dsp2:25,dsp3:26,dsp4:27,dsp5:28,dsp6:29,dsp7:30,dsp8:31,dsp9:32,dsp10:34,dpt1:35,dpt2:36,dpt3:37,dpt4:38,dpt5:39,dpt6:40,dpt7:41,dpt8:42,dpt9:43,dpt10:45};
-for(let i=1;i<=50;i++)OLD_INDEX['x'+i]=49+i;
-function imageStyle(item){const id=String(item?.id||''),m=id.match(/^(dat|dbg|dbs|dsp)(\d+)$/);if(m&&GROUP_SPRITES[m[1]]){const n=Math.max(0,Math.min(9,Number(m[2])-1)),x=(n%5)*25,y=n<5?0:100;return`background-image:url('${GROUP_SPRITES[m[1]]}');background-size:500% 200%;background-position:${x}% ${y}%;background-repeat:no-repeat`}const n=OLD_INDEX[id];if(n==null)return'';const col=n%10,row=Math.floor(n/10);return`background-image:url('/catalog-100-sprite.jpg');background-size:1000% 1000%;background-position:${(col/9)*100}% ${(row/9)*100}%;background-repeat:no-repeat`}
+const SPRITE_URL='/catalog-100-sprite.jpg';
+const SPRITE_INDEX={};
+for(let i=1;i<=50;i++)SPRITE_INDEX['x'+i]=i-1;
+for(let i=1;i<=10;i++)SPRITE_INDEX['dat'+i]=49+i;
+for(let i=1;i<=10;i++)SPRITE_INDEX['dba'+i]=59+i;
+for(let i=1;i<=10;i++)SPRITE_INDEX['dbg'+i]=59+i;
+for(let i=1;i<=10;i++)SPRITE_INDEX['dbs'+i]=69+i;
+for(let i=1;i<=10;i++)SPRITE_INDEX['dsp'+i]=79+i;
+for(let i=1;i<=10;i++)SPRITE_INDEX['dpt'+i]=89+i;
+function imageStyle(item){
+  const n=SPRITE_INDEX[String(item?.id||'')];
+  if(n==null)return '';
+  const col=n%10,row=Math.floor(n/10);
+  return `background-image:url('${SPRITE_URL}');background-size:1000% 1000%;background-position:${(col/9)*100}% ${(row/9)*100}%;background-repeat:no-repeat;background-color:#ead3bd`;
+}
 function numToken(s){s=String(s).toLowerCase().replace(/,/g,'');const n=parseFloat(s);return Number.isFinite(n)?n*(s.includes('k')?1000:1):0}
 function fixedPrice(range){const vals=(String(range||'').match(/[0-9][0-9,.]*\s*k?/gi)||[]).map(numToken).filter(Boolean);if(!vals.length)return 0;const raw=vals.length>1?(vals[0]+vals[1])/2:vals[0];if(raw<500)return Math.round(raw/10)*10;if(raw<2000)return Math.round(raw/50)*50;return Math.round(raw/100)*100}
 const money=n=>'₹'+Number(n||0).toLocaleString('en-IN');
@@ -48,7 +59,8 @@ function render(){
   grid.innerHTML=items.map((x,i)=>`<article class="ac-ai-data-card" data-product-id="${esc(x.id)}"><div class="ac-ai-data-art">${visual(x)}</div><div class="buyer-product-info"><small>${esc(x.type)} · ${esc(x.location||'India')}</small><b>${esc(x.name)}</b><strong>${money(fixedPrice(x.price))}</strong><small>${Math.max(72,98-i*2)}% match</small><p>${esc(reason(x,pref,budgetRelaxed))}</p><div class="ac-fixed-tag">${x.sellerEntered?`New seller listing · ${esc(x.artisan)}`:'Fixed price · uploaded catalog'}</div><button class="btn primary" data-buy="${esc(x.id)}">Buy now →</button></div></article>`).join('');
   grid.querySelectorAll('[data-buy]').forEach(b=>b.onclick=()=>checkout(items.find(x=>x.id===b.dataset.buy)));
 }
-const style=document.createElement('style');style.textContent=`.ac-ai-data-card{overflow:hidden}.ac-ai-data-art{height:230px;position:relative;background:#ead3bd;overflow:hidden}.ac-ai-data-art>img,.ac-sprite-image{width:100%;height:100%;object-fit:cover;display:block}.ac-fixed-tag{display:inline-flex;align-self:flex-start;padding:5px 8px;border-radius:999px;background:rgba(188,82,43,.09);color:var(--rust);font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.04em}.ac-ai-data-card .buyer-product-info{height:auto}.ac-ai-data-card .buyer-product-info p{min-height:44px}`;document.head.appendChild(style);
+const style=document.createElement('style');style.textContent=`.ac-ai-data-card{overflow:hidden}.ac-ai-data-art{height:190px;position:relative;background:#ead3bd;overflow:hidden}.ac-ai-data-art>img,.ac-sprite-image{width:100%;height:100%;object-fit:cover;display:block}.ac-sprite-image{background-color:#ead3bd}.ac-fixed-tag{display:inline-flex;align-self:flex-start;padding:5px 8px;border-radius:999px;background:rgba(188,82,43,.09);color:var(--rust);font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.04em}.ac-ai-data-card .buyer-product-info{height:auto}.ac-ai-data-card .buyer-product-info p{min-height:44px}@media(max-width:560px){.ac-ai-data-art{height:165px}}`;
+document.head.appendChild(style);
 window.addEventListener('storage',render);
 window.addEventListener('load',()=>setTimeout(render,250),{once:true});
 document.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;const t=(b.textContent||'').toLowerCase();if(t.includes('ai suggestions')||b.closest('.ac-art-options')||t.includes('next')){setTimeout(render,60);setTimeout(render,250)}},true);

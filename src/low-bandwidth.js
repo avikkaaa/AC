@@ -34,20 +34,19 @@ function toggle(){
 }
 
 function findLoginButton(){
-  const nodes=[...document.querySelectorAll('header button,header a,nav button,nav a,.nav button,.nav a,.navbar button,.navbar a')];
-  return nodes.find(el=>/^(log\s*in|login|sign\s*in)$/i.test((el.textContent||'').trim()))||
-    [...document.querySelectorAll('button,a')].find(el=>/^(log\s*in|login|sign\s*in)$/i.test((el.textContent||'').trim()));
+  return document.querySelector('header .head-actions button.login')||
+    document.querySelector('header .head-actions .login')||
+    [...document.querySelectorAll('header button,header a')].find(el=>/^login\b|^log\s*in\b|^sign\s*in\b/i.test((el.textContent||'').trim()));
 }
 
 function placeBesideLogin(){
   const b=document.querySelector('#ac-low-data-toggle');
-  if(!b)return false;
   const login=findLoginButton();
-  if(!login?.parentElement)return false;
-  if(b.parentElement!==login.parentElement||b.nextElementSibling!==login){
-    login.parentElement.insertBefore(b,login);
-  }
+  if(!b||!login?.parentElement)return false;
+  const actions=login.parentElement;
+  if(b.parentElement!==actions||b.nextElementSibling!==login)actions.insertBefore(b,login);
   b.classList.add('ac-low-data-nav');
+  actions.classList.add('ac-low-data-host');
   return true;
 }
 
@@ -67,7 +66,7 @@ function install(){
 }
 
 const style=document.createElement('style');
-style.textContent=`#ac-low-data-toggle{z-index:9998;border:1px solid rgba(92,53,33,.18);background:#fffaf2;color:#5c3521;padding:9px 12px;border-radius:999px;display:flex;align-items:center;justify-content:center;gap:7px;font:800 11px/1 system-ui;box-shadow:0 4px 14px rgba(61,35,22,.10);cursor:pointer;white-space:nowrap}#ac-low-data-toggle:not(.ac-low-data-nav){position:fixed;left:14px;bottom:14px}#ac-low-data-toggle.ac-low-data-nav{position:static!important;left:auto!important;bottom:auto!important;margin:0 8px 0 0;min-height:38px}#ac-low-data-toggle.active{background:#a4472e;color:#fff;border-color:#a4472e}#ac-low-data-toggle i{font-style:normal;font-size:14px}.ac-low-bandwidth *{scroll-behavior:auto!important}.ac-low-bandwidth *, .ac-low-bandwidth *::before,.ac-low-bandwidth *::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}.ac-low-bandwidth video,.ac-low-bandwidth .hero-video,.ac-low-bandwidth [class*="parallax"]{display:none!important}.ac-low-bandwidth .ac-catalog-grid,.ac-low-bandwidth .buyer-products{gap:10px!important}.ac-low-bandwidth .ac-catalog-card:nth-child(n+9),.ac-low-bandwidth .ac-ai-data-card:nth-child(n+7){content-visibility:auto;contain-intrinsic-size:300px 460px}@media(max-width:680px){#ac-low-data-toggle.ac-low-data-nav{padding:8px 9px;margin-right:5px;font-size:10px}#ac-low-data-toggle.ac-low-data-nav i{display:none}}`;
+style.textContent=`#ac-low-data-toggle{z-index:9998;border:1px solid rgba(92,53,33,.18);background:#fffaf2;color:#5c3521;padding:9px 12px;border-radius:999px;display:flex;align-items:center;justify-content:center;gap:7px;font:800 11px/1 system-ui;box-shadow:0 4px 14px rgba(61,35,22,.10);cursor:pointer;white-space:nowrap}#ac-low-data-toggle:not(.ac-low-data-nav){position:fixed;left:14px;bottom:14px}#ac-low-data-toggle.ac-low-data-nav{position:static!important;left:auto!important;bottom:auto!important;margin:0!important;min-height:38px;align-self:center}.ac-low-data-host{display:flex!important;align-items:center!important;gap:8px!important}#ac-low-data-toggle.active{background:#a4472e;color:#fff;border-color:#a4472e}#ac-low-data-toggle i{font-style:normal;font-size:14px}.ac-low-bandwidth *{scroll-behavior:auto!important}.ac-low-bandwidth *, .ac-low-bandwidth *::before,.ac-low-bandwidth *::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}.ac-low-bandwidth video,.ac-low-bandwidth .hero-video,.ac-low-bandwidth [class*="parallax"]{display:none!important}.ac-low-bandwidth .ac-catalog-grid,.ac-low-bandwidth .buyer-products{gap:10px!important}.ac-low-bandwidth .ac-catalog-card:nth-child(n+9),.ac-low-bandwidth .ac-ai-data-card:nth-child(n+7){content-visibility:auto;contain-intrinsic-size:300px 460px}@media(max-width:680px){#ac-low-data-toggle.ac-low-data-nav{padding:8px 9px;font-size:10px}#ac-low-data-toggle.ac-low-data-nav i{display:none}.ac-low-data-host{gap:5px!important}}`;
 document.head.appendChild(style);
 
 window.AC_LOW_BANDWIDTH={get enabled(){return enabled},set(v){enabled=Boolean(v);localStorage.setItem(KEY,enabled?'1':'0');apply()},toggle};

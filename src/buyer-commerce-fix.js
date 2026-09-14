@@ -13,13 +13,7 @@ function saveOrder(order){const orders=readOrders();orders.unshift(order);localS
 function findItemFromCard(card){
   const id=card?.dataset?.productId;
   if(id&&window.AC_BUYER_CATALOG){const item=window.AC_BUYER_CATALOG.find(x=>String(x.id)===String(id));if(item)return item}
-  return {
-    id:id||`product-${Date.now()}`,
-    name:card?.querySelector('b,h3')?.textContent?.trim()||'Handmade product',
-    type:card?.querySelector('small,p')?.textContent?.trim()||'Handmade',
-    category:'Handmade',
-    price:card?.querySelector('strong')?.textContent?.trim()||'₹0'
-  };
+  return {id:id||`product-${Date.now()}`,name:card?.querySelector('b,h3')?.textContent?.trim()||'Handmade product',type:card?.querySelector('small,p')?.textContent?.trim()||'Handmade',category:'Handmade',price:card?.querySelector('strong')?.textContent?.trim()||'₹0'};
 }
 function imageStyle(item){
   if(typeof window.AC_BUYER_CATALOG_IMAGE_STYLE==='function')return window.AC_BUYER_CATALOG_IMAGE_STYLE(item);
@@ -62,33 +56,15 @@ function enhanceBrowse(){
   }
 }
 
-function fixBuyerImages(){
-  if(localStorage.getItem('ac-user-role')!=='buyer')return;
-  document.querySelectorAll('.buyer-dashboard img,.dashboard-content img,.artist-list img,.product-card img,.ac-catalog-card img').forEach(img=>{
-    img.style.setProperty('width','100%','important');
-    img.style.setProperty('height','100%','important');
-    img.style.setProperty('object-fit','contain','important');
-    img.style.setProperty('object-position','center','important');
-    img.style.setProperty('background','#f4e7da','important');
-  });
-  document.querySelectorAll('.ac-catalog-art,.ac-product-hero,.artist-list .portrait').forEach(el=>{
-    el.style.setProperty('background-repeat','no-repeat','important');
-    el.style.setProperty('background-color','#f4e7da','important');
-  });
-  document.querySelectorAll('.ac-catalog-art,.ac-product-hero').forEach(el=>{
-    const bg=el.style.backgroundImage;
-    if(bg&&bg!=='none'&&!bg.includes('sprite')&&!bg.includes('/catalog/')){
-      el.style.setProperty('background-size','contain','important');
-      el.style.setProperty('background-position','center','important');
-    }
-  });
-}
-
 const style=document.createElement('style');
-style.textContent=`.ac-card-actions{flex-wrap:wrap}.ac-card-actions .ac-buy-now{flex-basis:100%;background:var(--rust,#a4472e)!important;color:#fff!important}.ac-checkout{display:flex;flex-direction:column;gap:12px;max-height:90vh;overflow:auto}.ac-checkout-image{height:190px;border-radius:15px;background-color:#f1e2d4;background-repeat:no-repeat;background-position:center;background-size:contain}.ac-checkout-row,.ac-checkout-total{display:flex;justify-content:space-between;align-items:center}.ac-checkout-total{padding-top:10px;border-top:1px solid rgba(92,53,33,.15);font-size:18px}.ac-checkout label{display:flex;flex-direction:column;gap:6px;font-size:12px;font-weight:800;color:#644b3d}.ac-checkout input,.ac-checkout textarea,.ac-checkout select{width:100%;box-sizing:border-box;border:1px solid rgba(92,53,33,.18);border-radius:10px;padding:10px;background:#fffaf4;color:#3f2d24;font:inherit}.ac-checkout textarea{min-height:74px;resize:vertical}.ac-demo-note{color:#84695a}.ac-order-success{text-align:center;display:flex;flex-direction:column;gap:10px;align-items:center;padding:14px}.ac-order-success>div{width:58px;height:58px;border-radius:50%;display:grid;place-items:center;background:#e6f5ed;color:#216047;font-size:28px;font-weight:900}.ac-order-success>strong{font:700 26px Georgia,serif;color:var(--rust,#a4472e)}`;
+style.textContent=`
+.ac-card-actions{flex-wrap:wrap}.ac-card-actions .ac-buy-now{flex-basis:100%;background:var(--rust,#a4472e)!important;color:#fff!important}
+.ac-catalog-art,.ac-product-hero{background-color:#f4e7da!important;background-repeat:no-repeat!important}
+.buyer-dashboard img,.dashboard-content img,.artist-list img,.product-card img,.ac-catalog-card img{object-fit:contain!important;object-position:center!important;background:#f4e7da!important}
+.ac-checkout{display:flex;flex-direction:column;gap:12px;max-height:90vh;overflow:auto}.ac-checkout-image{height:190px;border-radius:15px;background-color:#f1e2d4;background-repeat:no-repeat;background-position:center;background-size:contain}.ac-checkout-row,.ac-checkout-total{display:flex;justify-content:space-between;align-items:center}.ac-checkout-total{padding-top:10px;border-top:1px solid rgba(92,53,33,.15);font-size:18px}.ac-checkout label{display:flex;flex-direction:column;gap:6px;font-size:12px;font-weight:800;color:#644b3d}.ac-checkout input,.ac-checkout textarea,.ac-checkout select{width:100%;box-sizing:border-box;border:1px solid rgba(92,53,33,.18);border-radius:10px;padding:10px;background:#fffaf4;color:#3f2d24;font:inherit}.ac-checkout textarea{min-height:74px;resize:vertical}.ac-demo-note{color:#84695a}.ac-order-success{text-align:center;display:flex;flex-direction:column;gap:10px;align-items:center;padding:14px}.ac-order-success>div{width:58px;height:58px;border-radius:50%;display:grid;place-items:center;background:#e6f5ed;color:#216047;font-size:28px;font-weight:900}.ac-order-success>strong{font:700 26px Georgia,serif;color:var(--rust,#a4472e)}`;
 document.head.appendChild(style);
 
-enhanceBrowse();fixBuyerImages();
-const obs=new MutationObserver(()=>requestAnimationFrame(()=>{enhanceBrowse();fixBuyerImages()}));
-obs.observe(document.body,{childList:true,subtree:true});
-window.addEventListener('load',()=>{enhanceBrowse();fixBuyerImages()});
+enhanceBrowse();
+window.addEventListener('ac-browse-rendered',enhanceBrowse);
+document.addEventListener('click',e=>{if(e.target.closest('[data-view]'))setTimeout(enhanceBrowse,0)},true);
+window.addEventListener('load',enhanceBrowse);
